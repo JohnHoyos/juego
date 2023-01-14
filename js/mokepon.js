@@ -9,9 +9,10 @@ function encontrarSeleccion(listado,opcion){ //funcion generica para grupos4
     var aleatorio = Math.floor(Math.random()*(listado.length))
     if(opcion) return listado[aleatorio].id 
     else{
-        listado.forEach(element => {
-            if(element.checked) return element
-        });
+        for(i=0;i<listado.length;i++){
+            if(listado[i].checked)
+                return listado[i].id
+        }
     }
  }
 function seleccionarMascotaJugador(){//muestra en pantalla la seleccion
@@ -31,18 +32,9 @@ function seleccionarMascotaJugador(){//muestra en pantalla la seleccion
     botonAgua.addEventListener('click',ataqueAgua)
     botonTierra.addEventListener('click',ataqueTierra)
 }
-function ataqueFuego(){
-    ataqueJugador = "FUEGO"
-    mostrarAtaques()
-}
-function ataqueAgua(){
-    ataqueJugador = "AGUA"
-    mostrarAtaques()
-}
-function ataqueTierra(){
-    ataqueJugador = "TIERRA"
-    mostrarAtaques()
-}
+function ataqueFuego(){ataqueJugador = "FUEGO";mostrarAtaques()}
+function ataqueAgua(){ataqueJugador = "AGUA";mostrarAtaques()}
+function ataqueTierra(){ataqueJugador = "TIERRA";mostrarAtaques()}
 function mostrarAtaques(){
     let listaAtaques = document.getElementsByName("ataques")
     ataqueEnemigo = encontrarSeleccion(listaAtaques,true)
