@@ -70,4 +70,5 @@ function actualizarVidas(resul){
 
     msgJugador.innerHTML = vidaJugador
     msgEnemigo.innerHTML = vidaEnemigo
+    
 }
