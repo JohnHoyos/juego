@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOKEPON!</title>
     <script src="./js/mokepon.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <h1>MOKEPON! 🔥💧🌱</h1>
@@ -24,6 +25,8 @@
         <input type="radio" name="mascota" id="tucapalma">
         <label for="pydos">Pydos</label>
         <input type="radio" name="mascota" id="pydos">
+        <label for="estupitepo">estupitepo</label>
+        <input type="radio" name="mascota" id="estupitepo">
 
         <button id="boton-mascota">Seleccionar</button>
     </section>
@@ -33,14 +36,14 @@
         <p>Tu mascota <span id="mascota-jugador"></span> tiene <span>3</span> vidas</p>
         <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span>3</span> vidas</p>
         <p>
-            <button id="fuego">Fuego 🔥</button>
-            <button id="agua">Agua 💧</button>
-            <button id="tierra">Tierra 🌱</button>
+            <button id="fuego" name="ataques">Fuego 🔥</button>
+            <button id="agua" name="ataques">Agua 💧</button>
+            <button id="tierra" name="ataques">Tierra 🌱</button>
         </p>
     </section>
 
     <section id="mensajes">
-        <p>Tu mascota atacó con FUEGO, las mascota del enemigo atacó con TIERRA -  GANASTE 🎉🎉</p>
+        <p>Tu mascota atacó con <span id="ataque-jugador"></span>, las mascota del enemigo atacó con <span id="ataque-enemigo"></span> -  GANASTE 🎉🎉</p>
     </section>
 
     <section id="reiniciar">
