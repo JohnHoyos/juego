@@ -3,13 +3,20 @@ let ataqueEnemigo = ""
 let vidaJugador = 3
 let vidaEnemigo = 3
 window.addEventListener('load',() =>{
-
+    let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
+    sectionSeleccionarAtaque.style.display = "none"
+    let sectionReiniciar = document.getElementById("reiniciar")
+    sectionReiniciar.style.display = "none"
     let botonSeleccionar = document.getElementById("boton-seleccionar")//Aca se toma la varible que contiene todo el boton
     let botonReiniciar = document.getElementById("boton-reiniciar")
     botonReiniciar.addEventListener('click',() => {
            location.reload()
     })
     botonSeleccionar.addEventListener('click',() => {
+        let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
+        sectionSeleccionarMascota.style.display = "none"
+        let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
+        sectionSeleccionarAtaque.style.display = "block"
         let listadoMascotas = document.getElementsByName("mascotas")
         let mascotaJugador = document.getElementById("mascota-jugador")
         let mascotaEnemigo = document.getElementById("mascota-enemigo")
@@ -45,8 +52,13 @@ function actualizarAtaques(){
     let mensaje = document.createElement("p")
     let seccion_mensajes = document.getElementById("mensajes")
     if(vidaEnemigo == 0){
+        let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
+        sectionSeleccionarReiniciar.style.display = "block"
         mensaje.innerHTML = "Enemigo ha perdido"   
-    }else if(vidaJugador == 0)mensaje.innerHTML = "Jugador ha perdido"
+    }else if(vidaJugador == 0){
+        let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
+        sectionSeleccionarReiniciar.style.display = "block"
+        mensaje.innerHTML = "Jugador ha perdido"}
     else{
     mensaje.innerHTML = "Tu mascota atacó con " + ataqueJugador + " la mascota del enemigo atacó con " + ataqueEnemigo + " -  " + ganador()
     actualizarVidas(ganador())
