@@ -2,11 +2,13 @@ let ataqueJugador = ""
 let ataqueEnemigo = ""
 let vidaJugador = 3
 let vidaEnemigo = 3
-let variable = "a prueba"
-let variable2 = "de todo"
 window.addEventListener('load',() =>{
 
     let botonSeleccionar = document.getElementById("boton-seleccionar")//Aca se toma la varible que contiene todo el boton
+    let botonReiniciar = document.getElementById("boton-reiniciar")
+    botonReiniciar.addEventListener('click',() => {
+           location.reload()
+    })
     botonSeleccionar.addEventListener('click',() => {
         let listadoMascotas = document.getElementsByName("mascotas")
         let mascotaJugador = document.getElementById("mascota-jugador")
