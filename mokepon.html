@@ -6,33 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOKEPON!</title>
     <script src="./js/mokepon.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/estilo.css">
 </head>
 <body>
-    <h1>MOKEPON! 🔥💧🌱</h1>
-
-    <section id="seleccionar-mascota">
-        <h2>Elige tu mascota:</h2>
-        <label for="hipodoge">Hipodoge</label>
-        <input type="radio" name="mascotas" id="hipodoge">
-        <label for="capipepo">Capipepo</label>
-        <input type="radio" name="mascotas" id="capipepo">
-        <label for="ratigueya">Ratigueya</label>
-        <input type="radio" name="mascotas" id="ratigueya">
-        <label for="langostelvis">Langostelvis</label>
-        <input type="radio" name="mascotas" id="langostelvis">
-        <label for="tucapalma">Tucapalma</label>
-        <input type="radio" name="mascotas" id="tucapalma">
-        <label for="pydos">Pydos</label>
-        <input type="radio" name="mascotas" id="pydos">
-        <label for="estupitepo">estupitepo</label>
-        <input type="radio" name="mascotas" id="estupitepo">
+   <section id="seleccionar-mascota">
+        <h1 class="titulo">MOKEPON</h1>
+        
+        <h2 class="subtitulo">Elige tu mascota:</h2>
+        
+        <div class="tarjetas">
+            <label class="tarjeta-de-mokepon" for="hipodoge">
+                <p>Hipodoge</p>
+                <img src="./images/mokepons_mokepon_hipodoge_attack.png" alt="hipodoge">
+            </label>
+            <input type="radio" name="mascotas" id="hipodoge">
+            
+            <label class="tarjeta-de-mokepon" for="capipepo">
+                <p>Capipepo</p>
+                <img src="./images/mokepons_mokepon_capipepo_attack.png" alt="capipepo">
+            </label>
+            <input type="radio" name="mascotas" id="capipepo">
+            
+            <label class="tarjeta-de-mokepon" for="ratigueya">
+                <p>Ratigueya</p>
+                <img src="./images/mokepons_mokepon_ratigueya_attack.png" alt="ratigueya">
+            </label>
+            <input type="radio" name="mascotas" id="ratigueya">
+            
+            <label class="tarjeta-de-mokepon" for="langostelvis">
+                <p>Langostelvis</p>
+                <img src="./images/mokepons_mokepon_hipodoge_attack.png" alt="Langostelvis">
+            </label>
+            <input type="radio" name="mascotas" id="langostelvis">
+            
+            <label class="tarjeta-de-mokepon" for="tucapalma">
+                <p>tucapalma</p>
+                <img src="./images/mokepons_mokepon_capipepo_attack.png" alt="tucapalma">
+            </label>
+            <input type="radio" name="mascotas" id="tucapalma">
+            
+            <label class="tarjeta-de-mokepon" for="pydos">
+                <p>pydos</p>
+                <img src="./images/mokepons_mokepon_ratigueya_attack.png" alt="pydos">
+            </label>
+            <input type="radio" name="mascotas" id="pydos">
+            
+           
+        </div>
 
         <button id="boton-seleccionar">Seleccionar</button>
     </section>
 
     <section id="seleccionar-ataque">
+        <h1 class="titulo">MOKEPON! 🔥💧🌱</h1>
+        
         <h2>Elige tu ataque:</h2>
+        
         <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vida-jugador"></span> vidas</p>
         <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span id="vida-enemigo"></span> vidas</p>
         <p>
