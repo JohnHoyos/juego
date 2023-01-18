@@ -16,7 +16,7 @@ window.addEventListener('load',() =>{
         let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
         sectionSeleccionarMascota.style.display = "none"
         let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
-        sectionSeleccionarAtaque.style.display = "block"
+        sectionSeleccionarAtaque.style.display = "flex"
         let listadoMascotas = document.getElementsByName("mascotas")
         let mascotaJugador = document.getElementById("mascota-jugador")
         let mascotaEnemigo = document.getElementById("mascota-enemigo")
@@ -50,17 +50,31 @@ function actualizarAtaques(){
     let listaAtaques = document.getElementsByName("ataques")
     ataqueEnemigo = encontrarSeleccion(listaAtaques,true).toUpperCase()
     let mensaje = document.createElement("p")
-    let seccion_mensajes = document.getElementById("mensajes")
+    let seccion_mensajes = document.getElementById("resultado")
+    let ataquesDelJugador = document.getElementById("ataques-del-jugador")
+    let ataquesDelEnemigo = document.getElementById("ataques-del-enemigo")
+    
+    let notificacion = document.createElement("p")
+    let nuevoAtaqueDelJugador = document.createElement("p")
+    let nuevoAtaqueDelEnemigo = document.createElement("p")
+
+    seccion_mensajes.innerHTML = ganador()
+    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
+    nuevoAtaqueDelJugador.innerHTML = ataqueJugador
+    
+    ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
+    ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)  
+    
     if(vidaEnemigo == 0){
         let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
-        sectionSeleccionarReiniciar.style.display = "block"
-        mensaje.innerHTML = "Enemigo ha perdido"   
+        sectionSeleccionarReiniciar.style.display = "flex"
+        seccion_mensajes.innerHTML = "Enemigo ha perdido"   
     }else if(vidaJugador == 0){
         let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
-        sectionSeleccionarReiniciar.style.display = "block"
-        mensaje.innerHTML = "Jugador ha perdido"}
+        sectionSeleccionarReiniciar.style.display = "flex"
+        seccion_mensajes.innerHTML = "Jugador ha perdido"}
     else{
-    mensaje.innerHTML = "Tu mascota atacó con " + ataqueJugador + " la mascota del enemigo atacó con " + ataqueEnemigo + " -  " + ganador()
+   // mensaje.innerHTML = "Tu mascota atacó con " + ataqueJugador + " la mascota del enemigo atacó con " + ataqueEnemigo + " -  " + ganador()
     actualizarVidas(ganador())
     }
     seccion_mensajes.appendChild(mensaje)

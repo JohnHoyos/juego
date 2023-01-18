@@ -62,6 +62,55 @@ input{
     color: white;
     font-family: 'Poppins', sans-serif;
 }
+#seleccionar-ataque{
+    flex-direction: column;
+    align-items: center;
+}
 
-
-
+.botonataque{
+    font-family: 'Poppins', sans-serif;
+    background-color: #11468f;
+    padding: 10 px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    border-color:transparent;
+    width:150px;
+    height: 100px;
+    margin:20px;
+    font-size: large;
+    font-style:oblique;
+}
+#mensajes{
+    width: 280px;
+    background:cornflowerblue;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+#boton-reiniciar{
+    border:none;
+    background-color: cornflowerblue;
+    color:#11468f;
+}
+.ataques{
+    display:grid;
+    grid-template-columns: 100px 100px;
+    text-align: center;
+}
+.botonesAtaque{
+    display: flex;
+}
+@media (max-width: 400px){
+    .tarjetas, .botonesAtaque{        
+        flex-direction: column;
+    }
+    #mensajes{
+        width: 237px
+    }
+    
+}
