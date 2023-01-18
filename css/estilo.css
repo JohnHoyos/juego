@@ -48,11 +48,19 @@ span{
     display: flex;
     justify-content: center;
 }
-
-
 input{
-    display:none
+    display: none;
 }
+input:checked + label{
+    background-color: #2DCDDF;
+}
+input:hover + label{
+    background-color: cornflowerblue;
+}
+button:hover{
+    background-color: cornflowerblue;
+}
+
 #boton-seleccionar{
     width: 180px;
     height: 40px;
