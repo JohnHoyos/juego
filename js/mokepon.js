@@ -1,30 +1,131 @@
+const sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
+const sectionReiniciar = document.getElementById("reiniciar")
+const botonSeleccionar = document.getElementById("boton-seleccionar")//Aca se toma la varible que contiene todo el boton
+const botonReiniciar = document.getElementById("boton-reiniciar")
+const sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
+
+const mascotaJugador = document.getElementById("mascota-jugador")
+const mascotaEnemigo = document.getElementById("mascota-enemigo")
+const botonFuego = document.getElementById("fuego")
+const botonAgua = document.getElementById("agua")
+const botonTierra = document.getElementById("tierra")
+
+const listaAtaques = document.getElementsByName("ataques")
+const mensaje = document.createElement("p")
+const ataquesDelJugador = document.getElementById("ataques-del-jugador")
+const ataquesDelEnemigo = document.getElementById("ataques-del-enemigo")
+const seccion_mensajes = document.getElementById("resultado")
+const notificacion = document.createElement("p")
+const nuevoAtaqueDelEnemigo = document.createElement("p")
+const nuevoAtaqueDelJugador = document.createElement("p")
+const sectionSeleccionarReiniciar = document.getElementById("reiniciar")
+
+const msgJugador = document.getElementById("vida-jugador")
+const msgEnemigo = document.getElementById("vida-enemigo")
+const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
+
 let ataqueJugador = ""
 let ataqueEnemigo = ""
+let opcionDeMokepones 
 let vidaJugador = 3
 let vidaEnemigo = 3
+let mokepones = []
+let listadoMascotas 
+let mascotaElegidaJugador
+let mascotaElegidaEnemigo
+
+class Mokepon{
+    constructor(nombre,foto,vida){
+        this.nombre = nombre;
+        this.foto =foto;
+        this.vida = vida;
+        this.ataques =[]
+    }
+}
+
+let hipodoge = new Mokepon('Hipodoge','./images/mokepons_mokepon_hipodoge_attack.png',5)
+let capipepo = new Mokepon('Capipepo','./images/mokepons_mokepon_capipepo_attack.png',5)
+let ratigueya = new Mokepon('Ratigueya','./images/mokepons_mokepon_ratigueya_attack.png',5)
+let langostelvis = new Mokepon('Langontelvis','./images/mokepons_mokepon_hipodoge_attack.png',5)
+let tucapalma = new Mokepon('Tucapalma','./images/mokepons_mokepon_capipepo_attack.png',5)
+let pydos = new Mokepon('Pydos','./images/mokepons_mokepon_ratigueya_attack.png',5)
+
+hipodoge.ataques.push(
+    {nombre: '💧', id:'agua'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🌱', id:'tierra'}
+)
+capipepo.ataques.push(
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🔥', id:'fuego'}
+    
+)
+ratigueya.ataques.push(
+   
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🌱', id:'tierra'}
+    
+)
+langostelvis.ataques.push(
+    {nombre: '💧', id:'agua'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🌱', id:'tierra'}
+)
+tucapalma.ataques.push(
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '🌱', id:'tierra'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🔥', id:'fuego'}
+    
+)
+pydos.ataques.push(
+   
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🌱', id:'tierra'}
+    
+)
+mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos);
+
 window.addEventListener('load',() =>{
-    let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
+    
     sectionSeleccionarAtaque.style.display = "none"
-    let sectionReiniciar = document.getElementById("reiniciar")
     sectionReiniciar.style.display = "none"
-    let botonSeleccionar = document.getElementById("boton-seleccionar")//Aca se toma la varible que contiene todo el boton
-    let botonReiniciar = document.getElementById("boton-reiniciar")
+    
+    mokepones.forEach((mokepon) => {
+        opcionDeMokepones = `
+        <input type="radio" name="mascotas" id=${mokepon.nombre}>
+            <label class="tarjeta-de-mokepon" for=${mokepon.nombre}>
+                <p>${mokepon.nombre}</p>
+                <img src=${mokepon.foto} alt=${mokepon.nombre}>
+            </label>
+        `
+        contenedorTarjetas.innerHTML+= opcionDeMokepones            
+    })
+    
+    listadoMascotas = document.getElementsByName("mascotas")
+
     botonReiniciar.addEventListener('click',() => {
            location.reload()
     })
     botonSeleccionar.addEventListener('click',() => {
-        let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
+        mascotaElegidaJugador = encontrarSeleccion(listadoMascotas) 
+        mascotaElegidaEnemigo = encontrarSeleccion(listadoMascotas,true)
         sectionSeleccionarMascota.style.display = "none"
-        let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
-        sectionSeleccionarAtaque.style.display = "flex"
-        let listadoMascotas = document.getElementsByName("mascotas")
-        let mascotaJugador = document.getElementById("mascota-jugador")
-        let mascotaEnemigo = document.getElementById("mascota-enemigo")
-        let botonFuego = document.getElementById("fuego")
-        let botonAgua = document.getElementById("agua")
-        let botonTierra = document.getElementById("tierra")
-        let mascotaElegidaJugador = encontrarSeleccion(listadoMascotas) 
-        let mascotaElegidaEnemigo = encontrarSeleccion(listadoMascotas,true)
+        sectionSeleccionarAtaque.style.display = "flex"        
         mascotaJugador.innerHTML = mascotaElegidaJugador
         mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         actualizarVidas()
@@ -42,22 +143,13 @@ function encontrarSeleccion(listado,opcion){ //funcion generica para grupos4
                 return listado[i].id
             }
         }
-}
+} 
 function ataqueFuego(){ataqueJugador = "FUEGO";actualizarAtaques()}
 function ataqueAgua(){ataqueJugador = "AGUA";actualizarAtaques()}
 function ataqueTierra(){ataqueJugador = "TIERRA";actualizarAtaques()}
 function actualizarAtaques(){
-    let listaAtaques = document.getElementsByName("ataques")
-    ataqueEnemigo = encontrarSeleccion(listaAtaques,true).toUpperCase()
-    let mensaje = document.createElement("p")
-    let seccion_mensajes = document.getElementById("resultado")
-    let ataquesDelJugador = document.getElementById("ataques-del-jugador")
-    let ataquesDelEnemigo = document.getElementById("ataques-del-enemigo")
     
-    let notificacion = document.createElement("p")
-    let nuevoAtaqueDelJugador = document.createElement("p")
-    let nuevoAtaqueDelEnemigo = document.createElement("p")
-
+    ataqueEnemigo = encontrarSeleccion(listaAtaques,true).toUpperCase()
     seccion_mensajes.innerHTML = ganador()
     nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
     nuevoAtaqueDelJugador.innerHTML = ataqueJugador
@@ -66,15 +158,12 @@ function actualizarAtaques(){
     ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)  
     
     if(vidaEnemigo == 0){
-        let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
         sectionSeleccionarReiniciar.style.display = "flex"
         seccion_mensajes.innerHTML = "Enemigo ha perdido"   
     }else if(vidaJugador == 0){
-        let sectionSeleccionarReiniciar = document.getElementById("reiniciar")
         sectionSeleccionarReiniciar.style.display = "flex"
         seccion_mensajes.innerHTML = "Jugador ha perdido"}
     else{
-   // mensaje.innerHTML = "Tu mascota atacó con " + ataqueJugador + " la mascota del enemigo atacó con " + ataqueEnemigo + " -  " + ganador()
     actualizarVidas(ganador())
     }
     seccion_mensajes.appendChild(mensaje)
@@ -94,12 +183,10 @@ function ganador(){
     return resultado
 }
 function actualizarVidas(resul){
-    let msgJugador = document.getElementById("vida-jugador")
-    let msgEnemigo = document.getElementById("vida-enemigo")
+    
     if(resul == "PERDISTE 😢")vidaJugador--
     else if(resul == "GANASTE 🎉🎉")vidaEnemigo--
 
     msgJugador.innerHTML = vidaJugador
     msgEnemigo.innerHTML = vidaEnemigo
-    
 }

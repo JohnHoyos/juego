@@ -105,6 +105,9 @@ button:hover{
     background-color: cornflowerblue;
     color:#11468f;
 }
+#boton-reiniciar:hover{
+    color: #041562;
+}
 .ataques{
     display:grid;
     grid-template-columns: 100px 100px;
