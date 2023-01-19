@@ -6,9 +6,6 @@ const sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
 
 const mascotaJugador = document.getElementById("mascota-jugador")
 const mascotaEnemigo = document.getElementById("mascota-enemigo")
-const botonFuego = document.getElementById("fuego")
-const botonAgua = document.getElementById("agua")
-const botonTierra = document.getElementById("tierra")
 
 const listaAtaques = document.getElementsByName("ataques")
 const mensaje = document.createElement("p")
@@ -23,6 +20,7 @@ const sectionSeleccionarReiniciar = document.getElementById("reiniciar")
 const msgJugador = document.getElementById("vida-jugador")
 const msgEnemigo = document.getElementById("vida-enemigo")
 const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
+const renderAtaques=document.getElementById("renderAtaques")
 
 let ataqueJugador = ""
 let ataqueEnemigo = ""
@@ -33,6 +31,11 @@ let mokepones = []
 let listadoMascotas 
 let mascotaElegidaJugador
 let mascotaElegidaEnemigo
+let botonFuego 
+let botonAgua
+let botonTierra 
+let totalAtaquesJugador
+let resultadoExtraccion
 
 class Mokepon{
     constructor(nombre,foto,vida){
@@ -42,13 +45,15 @@ class Mokepon{
         this.ataques =[]
     }
 }
-
 let hipodoge = new Mokepon('Hipodoge','./images/mokepons_mokepon_hipodoge_attack.png',5)
 let capipepo = new Mokepon('Capipepo','./images/mokepons_mokepon_capipepo_attack.png',5)
 let ratigueya = new Mokepon('Ratigueya','./images/mokepons_mokepon_ratigueya_attack.png',5)
 let langostelvis = new Mokepon('Langontelvis','./images/mokepons_mokepon_hipodoge_attack.png',5)
 let tucapalma = new Mokepon('Tucapalma','./images/mokepons_mokepon_capipepo_attack.png',5)
 let pydos = new Mokepon('Pydos','./images/mokepons_mokepon_ratigueya_attack.png',5)
+let Albertino = new Mokepon('Albertino','./images/mokepons_mokepon_hipodoge_attack.png',4)
+let Bubusela = new Mokepon('Bubusela','./images/mokepons_mokepon_capipepo_attack.png',4)
+let Cascarroto = new Mokepon('Cascarroto','./images/mokepons_mokepon_ratigueya_attack.png',4)
 
 hipodoge.ataques.push(
     {nombre: '💧', id:'agua'},
@@ -91,6 +96,27 @@ tucapalma.ataques.push(
 )
 pydos.ataques.push(
    
+    {nombre: '🤜⭐', id:'fuego'},
+    {nombre: '💪', id:'agua'},
+    {nombre: '💧', id:'tierra'}
+    
+)
+Albertino.ataques.push(
+   
+    {nombre: '🧨🧨', id:'fuego'},
+    {nombre: '🔥', id:'agua'},
+    {nombre: '💧', id:'tierra'}
+    
+)
+Bubusela.ataques.push(
+   
+    {nombre: '🪂', id:'fuego'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '💧', id:'tierra'}
+    
+)
+Cascarroto.ataques.push(
+   
     {nombre: '🔥', id:'fuego'},
     {nombre: '🔥', id:'fuego'},
     {nombre: '🔥', id:'fuego'},
@@ -98,7 +124,7 @@ pydos.ataques.push(
     {nombre: '🌱', id:'tierra'}
     
 )
-mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos);
+mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos,Albertino,Bubusela,Cascarroto);
 
 window.addEventListener('load',() =>{
     
@@ -122,10 +148,13 @@ window.addEventListener('load',() =>{
            location.reload()
     })
     botonSeleccionar.addEventListener('click',() => {
+        sectionSeleccionarMascota.style.display = "none" // hace desaparecer elegir mascotas
+        sectionSeleccionarAtaque.style.display = "flex"   // hace aparecer la seccion de ataques
         mascotaElegidaJugador = encontrarSeleccion(listadoMascotas) 
         mascotaElegidaEnemigo = encontrarSeleccion(listadoMascotas,true)
-        sectionSeleccionarMascota.style.display = "none"
-        sectionSeleccionarAtaque.style.display = "flex"        
+        resultadoExtraccion=extraer_ataques_Jugador(mascotaElegidaJugador)
+        totalAtaquesJugador=renderizar_ataques(resultadoExtraccion)     
+        console.log(totalAtaquesJugador)
         mascotaJugador.innerHTML = mascotaElegidaJugador
         mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         actualizarVidas()
@@ -133,6 +162,27 @@ window.addEventListener('load',() =>{
         botonAgua.addEventListener('click',ataqueAgua)
         botonTierra.addEventListener('click',ataqueTierra)  
 })})
+function renderizar_ataques(elemento){
+    
+    elemento.forEach((item) => {
+        opcionDeMokepones = `
+        <button id=${item.id} class="botonataque" name="ataques">${item.nombre}</button>
+        `
+        renderAtaques.innerHTML+= opcionDeMokepones
+    })
+    botonFuego =document.getElementById("fuego")
+    botonAgua =document.getElementById("agua")
+    botonTierra =document.getElementById("tierra")
+}
+function extraer_ataques_Jugador(elementos){
+let ataques_jugador;
+    for(i=0;i<mokepones.length;i++){
+        if(elementos == mokepones[i].nombre){
+           ataques_jugador=mokepones[i].ataques
+        }        
+    }
+    return ataques_jugador
+}
 
 function encontrarSeleccion(listado,opcion){ //funcion generica para grupos4
     var aleatorio = Math.floor(Math.random()*(listado.length))
