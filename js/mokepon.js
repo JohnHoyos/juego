@@ -22,21 +22,25 @@ const msgEnemigo = document.getElementById("vida-enemigo")
 const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
 const renderAtaques=document.getElementById("renderAtaques")
 
-let ataqueJugador = ""
-let ataqueEnemigo = ""
+let ataqueJugador = []
+let ataqueEnemigo = []
 let opcionDeMokepones 
 let vidaJugador = 3
 let vidaEnemigo = 3
 let mokepones = []
-let listadoMascotas 
+let inputsMascotas
 let mascotaElegidaJugador
 let mascotaElegidaEnemigo
 let botonFuego 
 let botonAgua
 let botonTierra 
+let totalAtaquesJugadorJ
+let totalAtaquesJugadorE
 let totalAtaquesJugador
-let resultadoExtraccion
+let totalAtaquesEnemigo
+let botones = []
 
+// CLASE MOKEPON 
 class Mokepon{
     constructor(nombre,foto,vida){
         this.nombre = nombre;
@@ -45,6 +49,7 @@ class Mokepon{
         this.ataques =[]
     }
 }
+// INFORMACION DE CADA JUGADOR
 let hipodoge = new Mokepon('Hipodoge','./images/mokepons_mokepon_hipodoge_attack.png',5)
 let capipepo = new Mokepon('Capipepo','./images/mokepons_mokepon_capipepo_attack.png',5)
 let ratigueya = new Mokepon('Ratigueya','./images/mokepons_mokepon_ratigueya_attack.png',5)
@@ -54,7 +59,7 @@ let pydos = new Mokepon('Pydos','./images/mokepons_mokepon_ratigueya_attack.png'
 let Albertino = new Mokepon('Albertino','./images/mokepons_mokepon_hipodoge_attack.png',4)
 let Bubusela = new Mokepon('Bubusela','./images/mokepons_mokepon_capipepo_attack.png',4)
 let Cascarroto = new Mokepon('Cascarroto','./images/mokepons_mokepon_ratigueya_attack.png',4)
-
+// INYECTANDO ATAQUES AL JUGADOR
 hipodoge.ataques.push(
     {nombre: '💧', id:'agua'},
     {nombre: '💧', id:'agua'},
@@ -124,13 +129,13 @@ Cascarroto.ataques.push(
     {nombre: '🌱', id:'tierra'}
     
 )
-mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos,Albertino,Bubusela,Cascarroto);
+mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos,Albertino,Bubusela,Cascarroto);//INYECTA TODOS LOS ATAQUES
 
 window.addEventListener('load',() =>{
-    
+    //DESAPARECE LA SECCION DE ATAQUES Y LA SECCION DE REINICIAR
     sectionSeleccionarAtaque.style.display = "none"
     sectionReiniciar.style.display = "none"
-    
+    //INYECTA EL HTML DINAMICAMENTE DE INPUTS Y LABELS DE LOS MOKEPONES
     mokepones.forEach((mokepon) => {
         opcionDeMokepones = `
         <input type="radio" name="mascotas" id=${mokepon.nombre}>
@@ -142,64 +147,63 @@ window.addEventListener('load',() =>{
         contenedorTarjetas.innerHTML+= opcionDeMokepones            
     })
     
-    listadoMascotas = document.getElementsByName("mascotas")
-
+    inputsMascotas = document.getElementsByName("mascotas")
+    //LISTENER PARA CUANDO PRESIONEN REINICIAR
     botonReiniciar.addEventListener('click',() => {
            location.reload()
     })
     botonSeleccionar.addEventListener('click',() => {
-        sectionSeleccionarMascota.style.display = "none" // hace desaparecer elegir mascotas
-        sectionSeleccionarAtaque.style.display = "flex"   // hace aparecer la seccion de ataques
-        mascotaElegidaJugador = encontrarSeleccion(listadoMascotas) 
-        mascotaElegidaEnemigo = encontrarSeleccion(listadoMascotas,true)
-        resultadoExtraccion=extraer_ataques_Jugador(mascotaElegidaJugador)
-        totalAtaquesJugador=renderizar_ataques(resultadoExtraccion)     
-        console.log(totalAtaquesJugador)
+        sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
+        sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
+        mascotaElegidaJugador = encontrarSeleccion(inputsMascotas) 
+        mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
+        totalAtaquesJugador=extraer_ataques(mascotaElegidaJugador)
+        totalAtaquesEnemigo=extraer_ataques(mascotaElegidaEnemigo)
+        renderizar_ataques(totalAtaquesJugador)  
         mascotaJugador.innerHTML = mascotaElegidaJugador
         mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         actualizarVidas()
-        botonFuego.addEventListener('click',ataqueFuego)
-        botonAgua.addEventListener('click',ataqueAgua)
-        botonTierra.addEventListener('click',ataqueTierra)  
+ 
 })})
 function renderizar_ataques(elemento){
     
     elemento.forEach((item) => {
         opcionDeMokepones = `
-        <button id=${item.id} class="botonataque" name="ataques">${item.nombre}</button>
+        <button id=${item.id} class="botonataque btataques" name="ataques">${item.nombre}</button>
         `
         renderAtaques.innerHTML+= opcionDeMokepones
     })
     botonFuego =document.getElementById("fuego")
     botonAgua =document.getElementById("agua")
     botonTierra =document.getElementById("tierra")
-}
-function extraer_ataques_Jugador(elementos){
-let ataques_jugador;
-    for(i=0;i<mokepones.length;i++){
-        if(elementos == mokepones[i].nombre){
-           ataques_jugador=mokepones[i].ataques
-        }        
-    }
-    return ataques_jugador
-}
+    botones =  document.querySelectorAll(".btataques")
+    secuenciaAtaque()
 
-function encontrarSeleccion(listado,opcion){ //funcion generica para grupos4
-    var aleatorio = Math.floor(Math.random()*(listado.length))
-    if(opcion){return listado[aleatorio].id }
-    else{
-            for(i=0;i<listado.length;i++){ 
-                if(listado[i].checked)
-                return listado[i].id
-            }
-        }
-} 
-function ataqueFuego(){ataqueJugador = "FUEGO";actualizarAtaques()}
-function ataqueAgua(){ataqueJugador = "AGUA";actualizarAtaques()}
-function ataqueTierra(){ataqueJugador = "TIERRA";actualizarAtaques()}
+}
+function secuenciaAtaque(){
+    botones.forEach((boton) =>{
+        boton.addEventListener('click',(e) =>{
+         if(e.target.textContent == '🔥'){
+            ataqueJugador.push("FUEGO")
+            console.log(ataqueJugador)
+            boton.style.display = '#112F58'
+         }else if(e.target.textContent == '💧'){
+            ataqueJugador.push("AGUA")
+            console.log(ataqueJugador)
+            boton.style.background = '#112F58'
+         }else {
+            ataqueJugador.push("TIERRA")
+            console.log(ataqueJugador)
+            boton.style.background = '#112F58'
+         }
+         ataqueEnemigo.push(encontrarSeleccion(totalAtaquesEnemigo,true).toUpperCase())
+         console.log(ataqueEnemigo)
+        })
+    })
+}
 function actualizarAtaques(){
     
-    ataqueEnemigo = encontrarSeleccion(listaAtaques,true).toUpperCase()
+   //ataqueEnemigo = 
     seccion_mensajes.innerHTML = ganador()
     nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
     nuevoAtaqueDelJugador.innerHTML = ataqueJugador
@@ -239,4 +243,23 @@ function actualizarVidas(resul){
 
     msgJugador.innerHTML = vidaJugador
     msgEnemigo.innerHTML = vidaEnemigo
+}
+function extraer_ataques(elementos){
+    let ataques_jugador;
+        for(i=0;i<mokepones.length;i++){
+            if(elementos == mokepones[i].nombre){
+               ataques_jugador=mokepones[i].ataques
+            }        
+        }
+        return ataques_jugador
+}
+function encontrarSeleccion(listado,opcion){ //funcion generica para grupos4
+    var aleatorio = Math.floor(Math.random()*(listado.length))
+    if(opcion){return listado[aleatorio].id }
+    else{
+            for(i=0;i<listado.length;i++){ 
+                if(listado[i].checked)
+                return listado[i].id
+            }
+        }
 }
