@@ -13,8 +13,7 @@ const ataquesDelJugador = document.getElementById("ataques-del-jugador")
 const ataquesDelEnemigo = document.getElementById("ataques-del-enemigo")
 const seccion_mensajes = document.getElementById("resultado")
 const notificacion = document.createElement("p")
-const nuevoAtaqueDelEnemigo = document.createElement("p")
-const nuevoAtaqueDelJugador = document.createElement("p")
+
 const sectionSeleccionarReiniciar = document.getElementById("reiniciar")
 
 const msgJugador = document.getElementById("vida-jugador")
@@ -103,23 +102,23 @@ tucapalma.ataques.push(
 )
 pydos.ataques.push(
    
-    {nombre: '🤜⭐', id:'fuego'},
-    {nombre: '💪', id:'agua'},
-    {nombre: '💧', id:'tierra'}
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '💧', id:'agua'},
+    {nombre: '🌱', id:'tierra'}
     
 )
 Albertino.ataques.push(
    
-    {nombre: '🧨🧨', id:'fuego'},
-    {nombre: '🔥', id:'agua'},
-    {nombre: '💧', id:'tierra'}
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
+    {nombre: '💧', id:'agua'}
     
 )
 Bubusela.ataques.push(
    
-    {nombre: '🪂', id:'fuego'},
+    {nombre: '🔥', id:'fuego'},
     {nombre: '💧', id:'agua'},
-    {nombre: '💧', id:'tierra'}
+    {nombre: '💧', id:'agua'}
     
 )
 Cascarroto.ataques.push(
@@ -201,7 +200,8 @@ function indexonlive(jugador, enemigo){
     indesAtaqueJugador =  ataqueJugador[jugador]
 }
 function ganador(){
-    
+let nuevoAtaqueDelEnemigo = document.createElement("p")
+let nuevoAtaqueDelJugador = document.createElement("p")
     if( ataqueEnemigo.length === 5){
         for (let index = 0; index < ataqueEnemigo.length; index++) {
             if(ataqueJugador[index] == ataqueEnemigo[index]){
@@ -243,7 +243,7 @@ function secuenciaAtaque(){
         boton.addEventListener('click',(e) =>{
          if(e.target.textContent == '🔥'){
             ataqueJugador.push("FUEGO")
-            boton.style.display = '#112F58'
+            boton.style.background = '#112F58'
          }else if(e.target.textContent == '💧'){
             ataqueJugador.push("AGUA")
             boton.style.background = '#112F58'
