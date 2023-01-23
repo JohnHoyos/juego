@@ -22,6 +22,7 @@ const msgEnemigo = document.getElementById("vida-enemigo")
 const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
 const renderAtaques=document.getElementById("renderAtaques")
 
+let resultado = ""
 let ataqueJugador = []
 let ataqueEnemigo = []
 let opcionDeMokepones 
@@ -39,7 +40,8 @@ let totalAtaquesJugadorE
 let totalAtaquesJugador
 let totalAtaquesEnemigo
 let botones = []
-
+let indexAtaqueJugador 
+let indexAtaqueEnemigo
 // CLASE MOKEPON 
 class Mokepon{
     constructor(nombre,foto,vida){
@@ -157,59 +159,20 @@ window.addEventListener('load',() =>{
         sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
         mascotaElegidaJugador = encontrarSeleccion(inputsMascotas) 
         mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
+        mascotaJugador.innerHTML = mascotaElegidaJugador
+        mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         totalAtaquesJugador=extraer_ataques(mascotaElegidaJugador)
         totalAtaquesEnemigo=extraer_ataques(mascotaElegidaEnemigo)
         renderizar_ataques(totalAtaquesJugador)  
-        mascotaJugador.innerHTML = mascotaElegidaJugador
-        mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
-        actualizarVidas()
+        secuenciaAtaque()
+        
+       
+       // actualizarVidas()
  
 })})
-function renderizar_ataques(elemento){
-    
-    elemento.forEach((item) => {
-        opcionDeMokepones = `
-        <button id=${item.id} class="botonataque btataques" name="ataques">${item.nombre}</button>
-        `
-        renderAtaques.innerHTML+= opcionDeMokepones
-    })
-    botonFuego =document.getElementById("fuego")
-    botonAgua =document.getElementById("agua")
-    botonTierra =document.getElementById("tierra")
-    botones =  document.querySelectorAll(".btataques")
-    secuenciaAtaque()
 
-}
-function secuenciaAtaque(){
-    botones.forEach((boton) =>{
-        boton.addEventListener('click',(e) =>{
-         if(e.target.textContent == '🔥'){
-            ataqueJugador.push("FUEGO")
-            console.log(ataqueJugador)
-            boton.style.display = '#112F58'
-         }else if(e.target.textContent == '💧'){
-            ataqueJugador.push("AGUA")
-            console.log(ataqueJugador)
-            boton.style.background = '#112F58'
-         }else {
-            ataqueJugador.push("TIERRA")
-            console.log(ataqueJugador)
-            boton.style.background = '#112F58'
-         }
-         ataqueEnemigo.push(encontrarSeleccion(totalAtaquesEnemigo,true).toUpperCase())
-         console.log(ataqueEnemigo)
-        })
-    })
-}
+
 function actualizarAtaques(){
-    
-   //ataqueEnemigo = 
-    seccion_mensajes.innerHTML = ganador()
-    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
-    nuevoAtaqueDelJugador.innerHTML = ataqueJugador
-    
-    ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
-    ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)  
     
     if(vidaEnemigo == 0){
         sectionSeleccionarReiniciar.style.display = "flex"
@@ -223,19 +186,7 @@ function actualizarAtaques(){
     seccion_mensajes.appendChild(mensaje)
 
 }
-function ganador(){
-    let resultado = ""
-    if(ataqueJugador == ataqueEnemigo)
-     resultado = "EMPATE✌️"
-    else if(ataqueJugador == "FUEGO" && ataqueEnemigo == "TIERRA")
-     resultado = "GANASTE 🎉🎉"
-    else if(ataqueJugador == "AGUA" && ataqueEnemigo == "FUEGO")
-     resultado = "GANASTE 🎉🎉"
-    else if(ataqueJugador == "TIERRA" && ataqueEnemigo == "AGUA")
-     resultado = "GANASTE 🎉🎉"
-    else resultado = "PERDISTE 😢"
-    return resultado
-}
+
 function actualizarVidas(resul){
     
     if(resul == "PERDISTE 😢")vidaJugador--
@@ -243,6 +194,81 @@ function actualizarVidas(resul){
 
     msgJugador.innerHTML = vidaJugador
     msgEnemigo.innerHTML = vidaEnemigo
+}
+
+function indexonlive(jugador, enemigo){
+    indexAtaqueEnemigo =  ataqueEnemigo[enemigo]
+    indesAtaqueJugador =  ataqueJugador[jugador]
+}
+function ganador(){
+    
+    if( ataqueEnemigo.length === 5){
+        for (let index = 0; index < ataqueEnemigo.length; index++) {
+            if(ataqueJugador[index] == ataqueEnemigo[index]){
+                resultado = "EMPATE✌️"
+            }
+                
+            else if(ataqueJugador[index] == "FUEGO" && ataqueEnemigo[index] == "TIERRA"){
+                resultado = "GANASTE 🎉🎉"
+            }
+                
+            else if(ataqueJugador[index] == "AGUA" && ataqueEnemigo[index] == "FUEGO"){
+                resultado = "GANASTE 🎉🎉"
+            }
+            else if(ataqueJugador[index] == "TIERRA" && ataqueEnemigo[index] == "AGUA"){
+               resultado = "GANASTE 🎉🎉"
+            }
+            
+            else {
+              resultado = "PERDISTE 😢"
+            }
+             
+            
+        }
+        seccion_mensajes.innerHTML = resultado  
+        seccion_mensajes.appendChild(mensaje)
+    }else{
+        nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo[ataqueEnemigo.length - 1]
+        nuevoAtaqueDelJugador.innerHTML = ataqueJugador[ataqueJugador.length - 1]
+        
+        ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
+        ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo) 
+       
+    }
+    
+    
+}
+function secuenciaAtaque(){
+    botones.forEach((boton) =>{
+        boton.addEventListener('click',(e) =>{
+         if(e.target.textContent == '🔥'){
+            ataqueJugador.push("FUEGO")
+            boton.style.display = '#112F58'
+         }else if(e.target.textContent == '💧'){
+            ataqueJugador.push("AGUA")
+            boton.style.background = '#112F58'
+         }else {
+            ataqueJugador.push("TIERRA")
+            boton.style.background = '#112F58'
+         }
+         ataqueEnemigo.push(encontrarSeleccion(totalAtaquesEnemigo,true).toUpperCase())
+         ganador()
+        })
+    })
+}
+function renderizar_ataques(elemento){
+    
+    elemento.forEach((item) => {
+        opcionDeMokepones = `
+        <button id=${item.id} class="botonataque btataques" name="ataques">${item.nombre}</button>
+        `
+        renderAtaques.innerHTML+= opcionDeMokepones
+    })
+    botonFuego =document.getElementById("fuego")
+    botonAgua =document.getElementById("agua")
+    botonTierra =document.getElementById("tierra")
+    botones =  document.querySelectorAll(".btataques")
+    
 }
 function extraer_ataques(elementos){
     let ataques_jugador;
