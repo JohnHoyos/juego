@@ -21,6 +21,15 @@ const vidaEnemigo = document.getElementById("vida-enemigo")
 const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
 const renderAtaques=document.getElementById("renderAtaques")
 
+const sectionVerMapa = document.getElementById("ver-mapa")
+const mapa = document.getElementById("mapa")
+
+const moverDerecha = document.getElementById("moverDerecha")
+const moverIzquierda = document.getElementById("moverIzquierda")
+const moverAbajo = document.getElementById("moverAbajo")
+const moverArriba = document.getElementById("moverArriba")
+let movimientos = document.getElementById("movimientos")
+
 let resultado = ""
 let ataqueJugador = []
 let ataqueEnemigo = []
@@ -41,6 +50,10 @@ let indexAtaqueJugador
 let indexAtaqueEnemigo
 let victoriasEnemigo = 0
 let victoriasJugador = 0
+let lienzo = mapa.getContext("2d")
+let intervalo
+let mapaBackground = new Image()
+mapaBackground.src = "./images/mokemap.png"
 // CLASE MOKEPON 
 class Mokepon{
     constructor(nombre,foto,vida){
@@ -48,6 +61,14 @@ class Mokepon{
         this.foto =foto;
         this.vida = vida;
         this.ataques =[]
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = foto
+        this.velocidadX = 0
+        this.velocidadY = 0
     }
 }
 // INFORMACION DE CADA JUGADOR
@@ -57,9 +78,10 @@ let ratigueya = new Mokepon('Ratigueya','./images/mokepons_mokepon_ratigueya_att
 let langostelvis = new Mokepon('Langontelvis','./images/mokepons_mokepon_hipodoge_attack.png',5)
 let tucapalma = new Mokepon('Tucapalma','./images/mokepons_mokepon_capipepo_attack.png',5)
 let pydos = new Mokepon('Pydos','./images/mokepons_mokepon_ratigueya_attack.png',5)
-let Albertino = new Mokepon('Albertino','./images/mokepons_mokepon_hipodoge_attack.png',4)
-let Bubusela = new Mokepon('Bubusela','./images/mokepons_mokepon_capipepo_attack.png',4)
-let Cascarroto = new Mokepon('Cascarroto','./images/mokepons_mokepon_ratigueya_attack.png',4)
+let albertino = new Mokepon('Albertino','./images/mokepons_mokepon_hipodoge_attack.png',4)
+let bubusela = new Mokepon('Bubusela','./images/mokepons_mokepon_capipepo_attack.png',4)
+let cascarroto = new Mokepon('Cascarroto','./images/mokepons_mokepon_ratigueya_attack.png',4)
+
 // INYECTANDO ATAQUES AL JUGADOR
 hipodoge.ataques.push(
     {nombre: '💧', id:'agua'},
@@ -107,21 +129,21 @@ pydos.ataques.push(
     {nombre: '🌱', id:'tierra'}
     
 )
-Albertino.ataques.push(
+albertino.ataques.push(
    
     {nombre: '🔥', id:'fuego'},
     {nombre: '🔥', id:'fuego'},
     {nombre: '💧', id:'agua'}
     
 )
-Bubusela.ataques.push(
+bubusela.ataques.push(
    
     {nombre: '🔥', id:'fuego'},
     {nombre: '💧', id:'agua'},
     {nombre: '💧', id:'agua'}
     
 )
-Cascarroto.ataques.push(
+cascarroto.ataques.push(
    
     {nombre: '🔥', id:'fuego'},
     {nombre: '🔥', id:'fuego'},
@@ -130,11 +152,14 @@ Cascarroto.ataques.push(
     {nombre: '🌱', id:'tierra'}
     
 )
-mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos,Albertino,Bubusela,Cascarroto);//INYECTA TODOS LOS ATAQUES
 
+
+mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos,albertino,bubusela,cascarroto);//INYECTA TODOS LOS ATAQUES
+//console.log(mokepones)
 window.addEventListener('load',() =>{
     //DESAPARECE LA SECCION DE ATAQUES Y LA SECCION DE REINICIAR
     sectionSeleccionarAtaque.style.display = "none"
+    sectionVerMapa.style.display = "none"
     sectionReiniciar.style.display = "none"
     //INYECTA EL HTML DINAMICAMENTE DE INPUTS Y LABELS DE LOS MOKEPONES
     mokepones.forEach((mokepon) => {
@@ -153,11 +178,17 @@ window.addEventListener('load',() =>{
     botonReiniciar.addEventListener('click',() => {
            location.reload()
     })
+    
+   
     botonSeleccionar.addEventListener('click',() => {
         sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
-        sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
+        //sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
+        
+        sectionVerMapa.style.display = "flex"
+       
         mascotaElegidaJugador = encontrarSeleccion(inputsMascotas) 
         mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
+        iniciarMapa()        
         mascotaJugador.innerHTML = mascotaElegidaJugador
         mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         totalAtaquesJugador=extraer_ataques(mascotaElegidaJugador)
@@ -166,7 +197,87 @@ window.addEventListener('load',() =>{
         secuenciaAtaque()
 
 })})
+function iniciarMapa(){
+    mapa.width = 500
+    mapa.height = 400
+    intervalo = setInterval(pintarCanva,50,eval(mascotaElegidaJugador.toLowerCase()))
+    movimientos.addEventListener("mousedown", (e) => {
+        console.log(e)
 
+        if(e.target.textContent == "Derecha"){
+            moverDerechaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else if(e.target.textContent == "Izquierda"){
+            moverIzquierdaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else if(e.target.textContent == "Arriba"){
+            moverArribaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else{
+            moverAbajoPersonaje(mascotaElegidaJugador.toLowerCase())
+        }
+    })
+    movimientos.addEventListener('pointerup', (e) => {
+        detenerMovimiento(eval(mascotaElegidaJugador.toLowerCase()))
+    })
+    window.addEventListener("keydown", (e) => {
+        console.log(e)
+
+        if(e.key == "ArrowRight"){
+            moverDerechaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else if(e.key == "ArrowLeft"){
+            moverIzquierdaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else if(e.key == "ArrowUp"){
+            moverArribaPersonaje(mascotaElegidaJugador.toLowerCase())
+        }else if(e.key == "ArrowDown"){
+            moverAbajoPersonaje(mascotaElegidaJugador.toLowerCase())
+        }
+    })
+    window.addEventListener("keyup", (e) => {
+        detenerMovimiento(eval(mascotaElegidaJugador.toLowerCase()))
+    })
+}
+function moverDerechaPersonaje(personaje){
+    var mascota = {}
+    mascota = eval(personaje)
+    mascota.velocidadX = 5
+}
+function moverIzquierdaPersonaje(personaje){
+    var mascota = {}
+    mascota = eval(personaje)
+    mascota.velocidadX = -5
+}
+function moverAbajoPersonaje(personaje){
+    var mascota = {}
+    mascota = eval(personaje)
+    mascota.velocidadY = 5
+}
+function moverArribaPersonaje(personaje){
+    var mascota = {}
+    mascota = eval(personaje)
+    mascota.velocidadY = -5
+}
+function pintarCanva(personaje){
+    personaje.x = personaje.x + personaje.velocidadX
+    personaje.y = personaje.y + personaje.velocidadY
+    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.clientHeight)
+    lienzo.drawImage(
+        mapaBackground,
+        0,
+        0,
+        mapa.width,
+        mapa.height
+    )
+    lienzo.drawImage(
+        personaje.mapaFoto,
+        personaje.x,//posicion en x
+        personaje.y,//posicion de y
+        personaje.ancho,// de ancho
+        personaje.alto// de alto
+    )
+
+}
+function detenerMovimiento(personaje){
+    personaje.velocidadX = 0
+    personaje.velocidadY = 0   
+}
 function msgResultado(){// DESPUES DE ELEGIR LOS 5 ATAQUES Y SER COMPARADOS, SE DETERMINA EL MENSAJE FINAL
     
     if(victoriasEnemigo == victoriasJugador){
