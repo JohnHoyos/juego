@@ -162,13 +162,12 @@ window.addEventListener('load',() =>{
         mascotaEnemigo.innerHTML = mascotaElegidaEnemigo
         totalAtaquesJugador=extraer_ataques(mascotaElegidaJugador)
         totalAtaquesEnemigo=extraer_ataques(mascotaElegidaEnemigo)
-        renderizar_ataques(totalAtaquesJugador)  
+        renderizar_ataques(totalAtaquesJugador)//RENDERIZA O CREA LOS BOTONES DE ATAQUES DEL JUEGADOR  
         secuenciaAtaque()
 
 })})
 
-
-function actualizarAtaques(){
+function msgResultado(){// DESPUES DE ELEGIR LOS 5 ATAQUES Y SER COMPARADOS, SE DETERMINA EL MENSAJE FINAL
     
     if(victoriasEnemigo == victoriasJugador){
         sectionSeleccionarReiniciar.style.display = "flex"
@@ -184,9 +183,9 @@ function actualizarAtaques(){
 }
 
 function ganador(){
-let nuevoAtaqueDelEnemigo = document.createElement("p")
+let nuevoAtaqueDelEnemigo = document.createElement("p")// SERCREA INTERNAMENTE PARA QUE SE CREE Y MUESTRE UN PARRAFO NUEVO
 let nuevoAtaqueDelJugador = document.createElement("p")
-    if( ataqueEnemigo.length === 5){
+    if( ataqueEnemigo.length === 5){// SOLO CUANDO SE ELIGEN LOS 5 ATAQUES SE COMPARARA EL LOS ARREGLOS DE ATAQUES PARA DETERMINAR GANADOR Y VICTORIAS
         for (let index = 0; index < ataqueEnemigo.length; index++) {
             if(ataqueJugador[index] == ataqueEnemigo[index]){
                 resultado = "EMPATE✌️"
@@ -216,7 +215,7 @@ let nuevoAtaqueDelJugador = document.createElement("p")
         vidaEnemigo.innerHTML =victoriasEnemigo
         
         }
-        actualizarAtaques()
+        msgResultado()
        
     }else{
         nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo[ataqueEnemigo.length - 1]
@@ -225,9 +224,7 @@ let nuevoAtaqueDelJugador = document.createElement("p")
         ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
         ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)
                
-    }
-    
-    
+    }   
 }
 function secuenciaAtaque(){
     botones.forEach((boton) =>{
@@ -245,7 +242,7 @@ function secuenciaAtaque(){
             boton.style.background = '#112F58'
             boton.disabled = true
          }
-         ataqueEnemigo.push(encontrarSeleccion(totalAtaquesEnemigo,true).toUpperCase())
+         ataqueEnemigo.push(encontrarSeleccion(totalAtaquesEnemigo,true).toUpperCase())// POR CADA CLICK QUE HAGA EL USUARIO,GENERA UN ENEMIGO ALEATORIO Y LO CARGA A UN ARREGLO
          ganador()
         })
     })
