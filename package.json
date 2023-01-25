@@ -1,0 +1,22 @@
+{
+  "name": "mokepon",
+  "version": "1.0.0",
+  "description": "Paquete de mokepon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnHoyos/juego.git"
+  },
+  "author": "John Bayron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JohnHoyos/juego/issues"
+  },
+  "homepage": "https://github.com/JohnHoyos/juego#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

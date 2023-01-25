@@ -54,6 +54,17 @@ let lienzo = mapa.getContext("2d")
 let intervalo
 let mapaBackground = new Image()
 mapaBackground.src = "./images/mokemap.png"
+
+let anchoDelMapa =  window.innerWidth - 20
+
+const anchoMaximoDelMapa = 500
+
+if(anchoDelMapa > anchoMaximoDelMapa){
+    anchoDelMapa = anchoMaximoDelMapa - 20
+}
+let alturaDelMapa = anchoDelMapa * 500 / 400
+mapa.width = anchoDelMapa
+mapa.height = alturaDelMapa
 // CLASE MOKEPON 
 class Mokepon{
     constructor(nombre,foto,vida,fotomapa,x = 20,y = 10){
@@ -183,14 +194,11 @@ window.addEventListener('load',() =>{
         `
         contenedorTarjetas.innerHTML+= opcionDeMokepones            
     })
-    
     inputsMascotas = document.getElementsByName("mascotas")
     //LISTENER PARA CUANDO PRESIONEN REINICIAR
     botonReiniciar.addEventListener('click',() => {
            location.reload()
     })
-    
-   
     botonSeleccionar.addEventListener('click',() => {
         sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
         //sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
@@ -201,10 +209,10 @@ window.addEventListener('load',() =>{
         iniciarMapa()        
         
 
-})})
+    })
+})
 function iniciarMapa(){
-    mapa.width = 500
-    mapa.height = 400
+   
     intervalo = setInterval(pintarCanva,50,eval(mascotaElegidaJugador.toLowerCase()))
     movimientos.addEventListener("mousedown", (e) => {
         if(e.target.textContent == "Derecha"){
@@ -235,7 +243,6 @@ function iniciarMapa(){
         detenerMovimiento(eval(mascotaElegidaJugador.toLowerCase()))
     })
 }
-
 function pintarCanva(personajeJugador){
     personajeJugador.x = personajeJugador.x + personajeJugador.velocidadX
     personajeJugador.y = personajeJugador.y + personajeJugador.velocidadY
@@ -256,41 +263,42 @@ function pintarCanva(personajeJugador){
             if(personajeJugador != mokepon)
             validaColision(personajeJugador,mokepon)
         })
-        
     }
-    function validaColision(jugador,enemigo){
-        const abajoMascota = jugador.y + jugador.alto
-        const abajoEnemigo = enemigo.y + enemigo.alto
-        const arribaEnemigo = enemigo.y
-        const arribaMascota = jugador. y
-        const derechaMascota = jugador.x + jugador.ancho
-        const derechaEnemigo = enemigo.x + enemigo.ancho
-        const izquierdaEnemigo = enemigo.x
-        const izquierdaMascota = jugador.x
-        
-       if(
-            abajoMascota < arribaEnemigo ||
-            arribaMascota > abajoEnemigo ||
-            derechaMascota < izquierdaEnemigo ||
-            izquierdaMascota > derechaEnemigo 
-        ) return
-       
-        detenerMovimiento(jugador)
-        sectionSeleccionarAtaque.style.display = "flex"
-        sectionVerMapa.style.display = "none"
-        mascotaJugador.innerHTML = jugador.nombre
-        mascotaEnemigo.innerHTML = enemigo.nombre
-        totalAtaquesJugador=extraer_ataques(jugador)
-        totalAtaquesEnemigo=extraer_ataques(enemigo)
-        renderizar_ataques(totalAtaquesJugador)//RENDERIZA O CREA LOS BOTONES DE ATAQUES DEL JUEGADOR  
-        secuenciaAtaque()             
+ 
+}
+function validaColision(jugador,enemigo){
+    const abajoMascota = jugador.y + jugador.alto
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const arribaEnemigo = enemigo.y
+    const arribaMascota = jugador. y
+    const derechaMascota = jugador.x + jugador.ancho
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+    const izquierdaMascota = jugador.x
     
-    }    
+   if(
+        abajoMascota < arribaEnemigo ||
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo 
+    ) return
+    
+    clearInterval(intervalo)
+    detenerMovimiento(jugador)
+    sectionSeleccionarAtaque.style.display = "flex"
+    sectionVerMapa.style.display = "none"
+    mascotaJugador.innerHTML = jugador.nombre
+    mascotaEnemigo.innerHTML = enemigo.nombre
+    totalAtaquesJugador=extraer_ataques(jugador)
+    totalAtaquesEnemigo=extraer_ataques(enemigo)
+    renderizar_ataques(totalAtaquesJugador)//RENDERIZA O CREA LOS BOTONES DE ATAQUES DEL JUEGADOR  
+    secuenciaAtaque()             
+
+}  
 function pintarMokepones(){
     mokepones.forEach((item) =>{
         item.pintar()
     })
-}
 }
 function moverDerechaPersonaje(personaje){
     var mascota = {}
@@ -330,7 +338,6 @@ function msgResultado(){// DESPUES DE ELEGIR LOS 5 ATAQUES Y SER COMPARADOS, SE 
     seccion_mensajes.appendChild(mensaje)
 
 }
-
 function ganador(){
 let nuevoAtaqueDelEnemigo = document.createElement("p")// SERCREA INTERNAMENTE PARA QUE SE CREE Y MUESTRE UN PARRAFO NUEVO
 let nuevoAtaqueDelJugador = document.createElement("p")

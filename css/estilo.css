@@ -122,9 +122,7 @@ button:hover{
     justify-content: center;
 
 }
-#mapa{
-    border: 2px solid white;
-}
+
 @media (max-width: 400px){
     .tarjetas, .botonesAtaque{        
         flex-direction: column;
