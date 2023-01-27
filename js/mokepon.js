@@ -54,17 +54,16 @@ let lienzo = mapa.getContext("2d")
 let intervalo
 let mapaBackground = new Image()
 mapaBackground.src = "./images/mokemap.png"
-
 let anchoDelMapa =  window.innerWidth - 20
-
 const anchoMaximoDelMapa = 500
-
 if(anchoDelMapa > anchoMaximoDelMapa){
     anchoDelMapa = anchoMaximoDelMapa - 20
 }
 let alturaDelMapa = anchoDelMapa * 500 / 400
 mapa.width = anchoDelMapa
 mapa.height = alturaDelMapa
+
+let jugadorId = null
 // CLASE MOKEPON 
 class Mokepon{
     constructor(nombre,foto,vida,fotomapa,x = 20,y = 10){
@@ -174,11 +173,11 @@ cascarroto.ataques.push(
     {nombre: '🌱', id:'tierra'}
     
 ) */
-
-
 mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos);//INYECTA TODOS LOS ATAQUES
 //console.log(mokepones)
 window.addEventListener('load',() =>{
+    //UNIRSE AL JUEGO
+    unirseAlJuego()
     //DESAPARECE LA SECCION DE ATAQUES Y LA SECCION DE REINICIAR
     sectionSeleccionarAtaque.style.display = "none"
     sectionVerMapa.style.display = "none"
@@ -202,8 +201,8 @@ window.addEventListener('load',() =>{
     botonSeleccionar.addEventListener('click',() => {
         sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
         //sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
-      
         mascotaElegidaJugador = encontrarSeleccion(inputsMascotas) 
+        seleccionarMokepon(mascotaElegidaJugador)
         //mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
         sectionVerMapa.style.display = "flex"
         iniciarMapa()        
@@ -211,6 +210,29 @@ window.addEventListener('load',() =>{
 
     })
 })
+function seleccionarMokepon(mascota){
+fetch(`http://localhost:8080/mokepon/${jugadorId}`,{
+    method: "post",
+    headers:{
+        "content-Type": "application/json"
+    },
+    body:JSON.stringify({
+        mokepon: mascota
+    })
+})
+}
+function unirseAlJuego(){
+    fetch("http://localhost:8080/unirse")
+        .then(function (res){
+            if(res.ok){
+                res.text()
+                 .then(function (respuesta){
+                    console.log(respuesta)
+                    jugadorId = respuesta
+                 })
+            }
+        })
+}
 function iniciarMapa(){
    
     intervalo = setInterval(pintarCanva,50,eval(mascotaElegidaJugador.toLowerCase()))
