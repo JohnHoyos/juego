@@ -38,7 +38,6 @@ app.post("/mokepon/:jugadorId", (req, res) =>{
     }
     console.log (jugadores)
     console.log(jugadorId)
-    
     res.end()
 })
  
