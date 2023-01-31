@@ -210,8 +210,8 @@ window.addEventListener('load',() =>{
 
     })
 })
-function seleccionarMokepon(mascota){
-fetch(`http://localhost:8080/mokepon/${jugadorId}`,{
+function seleccionarMokepon(mascota){//envia informacion al backend
+fetch(`http://localhost:3000/mokepon/${jugadorId}`,{
     method: "post",
     headers:{
         "content-Type": "application/json"
@@ -222,7 +222,7 @@ fetch(`http://localhost:8080/mokepon/${jugadorId}`,{
 })
 }
 function unirseAlJuego(){
-    fetch(`http://localhost:8080/unirse`)
+    fetch(`http://localhost:3000/unirse`)
         .then(function (res){
             if(res.ok){
                 res.text()

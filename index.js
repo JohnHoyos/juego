@@ -1,38 +1,49 @@
-const express = require("express")// se importa la libreria de express
-const cors = require("cors")// se importa la libreria de cors
-//var log4js = require("log4js");
-//var logger = log4js.getLogger('app');
-//logger.level = "all";
-//logger.debug("Some debug messages");
-
+const express = require('express')
+const cors = require('cors')
 const app = express()
-//app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
-app.use(cors())//Deshabilite errores relacionados con cors
-app.use(express.json) // Habilitar la capacidad de recibir peticiones post con JSON
+app.use(cors()) // uso la funcion de cors sobre la de express
+app.use(express.json())//Para poder recibir datos de los usuarios
+
+
 const jugadores = []
 
 class Jugador{
     constructor(id){
         this.id = id
     }
+    asignarMokepon(mokepon){
+        this.mokepon = mokepon
+    }
 }
-const port = 8082
+
+class Mokepon{
+    constructor(nombre){
+        this.nombre = nombre
+    }
+}
 
 app.get("/unirse", (req, res) => {
     const id = `${Math.random()}`
     const jugador =  new Jugador(id)
     jugadores.push(jugador)
-    //res.setHeader("Access-Control-Allow-Origin","*")
+    res.setHeader("Access-Control-Allow-Origin","*")
     res.send(id)
-})
+});
 
-/* app.post("/mokepon/:jugadorId", (req, res) =>{
+app.post("/mokepon/:jugadorId", (req, res) =>{
     const jugadorId = req.params.jugadorId || ""
+    const nombre = req.body.mokepon || ""
+    const mokepon = new Mokepon(nombre)
+    const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
+    if( jugadorIndex >= 0){
+        jugadores[jugadorIndex].asignarMokepon(mokepon)
+    }
     console.log (jugadores)
     console.log(jugadorId)
+    
     res.end()
-}) */
-
-app.listen(port, () => {
-    console.log("Servidor funcionando")
+})
+ 
+app.listen(3000, () => {
+    console.log("listening on http://localhost:3000");
 })
