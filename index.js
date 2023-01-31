@@ -29,6 +29,9 @@ app.get("/unirse", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin","*")
     res.send(id)
 });
+
+
+
 app.post("/mokepon/:jugadorId", (req, res) =>{
     const jugadorId = req.params.jugadorId || ""
     const nombre = req.body.mokepon || ""
