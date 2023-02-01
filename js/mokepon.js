@@ -206,11 +206,9 @@ window.addEventListener('load',() =>{
         //mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
         sectionVerMapa.style.display = "flex"
         iniciarMapa()        
-        
-
     })
 })
-function seleccionarMokepon(mascota){//envia informacion al backend
+function seleccionarMokepon(mascota){//envia informacion al backend sobre que mascota se eligió
 fetch(`http://localhost:3000/mokepon/${jugadorId}`,{
     method: "post",
     headers:{
@@ -221,7 +219,7 @@ fetch(`http://localhost:3000/mokepon/${jugadorId}`,{
     })
 })
 }
-function unirseAlJuego(){
+function unirseAlJuego(){//RECIBE EL ID DESDE EL SERVIDOR Y LO ASIGNA A JUGADOID
     fetch(`http://localhost:3000/unirse`)
         .then(function (res){
             if(res.ok){
@@ -269,7 +267,7 @@ function pintarCanva(personajeJugador){
     personajeJugador.x = personajeJugador.x + personajeJugador.velocidadX
     personajeJugador.y = personajeJugador.y + personajeJugador.velocidadY
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.clientHeight)
-    //console.log(personajeJugador, personajeEnemigo)
+    
     lienzo.drawImage(
         mapaBackground,
         0,
@@ -278,6 +276,7 @@ function pintarCanva(personajeJugador){
         mapa.height
     )
     pintarMokepones()
+    enviarPosicion(personajeJugador.x,personajeJugador.y)
     personajeJugador.pintar()
     if(personajeJugador.velocidadX > 0 || personajeJugador.velocidadY > 0){
         
@@ -287,6 +286,18 @@ function pintarCanva(personajeJugador){
         })
     }
  
+}
+function enviarPosicion(x,y){// envia al server la posicion del jugador
+    fetch(`http://localhost:3000/mokepon/${jugadorId}/posicion`,{
+    method: "post",
+    headers:{
+        "content-Type": "application/json"
+    },
+    body:JSON.stringify({
+        x,// se esta abreviando x:x
+        y
+    })
+})
 }
 function validaColision(jugador,enemigo){
     const abajoMascota = jugador.y + jugador.alto
