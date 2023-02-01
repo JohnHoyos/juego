@@ -4,7 +4,7 @@ const app = express()
 app.use(cors()) // uso la funcion de cors sobre la de express
 app.use(express.json())//Para poder recibir datos de los usuarios
 
-
+let numero = 0
 const jugadores = []
 
 class Jugador{
@@ -26,10 +26,12 @@ class Mokepon{
     }
 }
 app.get("/unirse", (req, res) => {
-    const id = `${Math.random()}`
+    
+    const id = `${numero}`
     const jugador =  new Jugador(id)
     jugadores.push(jugador)
     res.setHeader("Access-Control-Allow-Origin","*")
+    numero++
     res.send(id)
 });
 app.post("/mokepon/:jugadorId", (req, res) =>{
@@ -50,9 +52,13 @@ app. post("/mokepon/:jugadorId/posicion", (req, res) =>{
     const y = req.body.y || 0
     const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
     if( jugadorIndex >= 0){
-        actualizarPosicion(x,y)
+        jugadores[jugadorIndex].actualizarPosicion(x,y)
     }
-    res.end()
+    const enemigos = jugadores.filter((jugador) => jugadorId !== jugador.id)
+    
+    res.send({
+        enemigos
+    })
 
 })
 app.listen(3000, () => {
