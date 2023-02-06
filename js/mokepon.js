@@ -324,13 +324,10 @@ function pintarCanva(personajeJugador){
     
     
     if(personajeJugador.velocidadX > 0 || personajeJugador.velocidadY > 0){
+       mokeponesEnemigos.forEach(function(enemigo){
+        validaColision(personajeJugador,enemigo)
+       }) 
         
-        mokepones.forEach((mokepon) => {
-            if(personajeJugador != mokepon){
-            console.log(mokeponesEnemigos)
-            validaColision(personajeJugador,mokeponesEnemigos)
-            }
-        })
     }
  
 }

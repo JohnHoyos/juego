@@ -41,8 +41,8 @@ app.post("/mokepon/:jugadorId", (req, res) =>{
     if( jugadorIndex >= 0){
         jugadores[jugadorIndex].asignarMokepon(mokepon)
     }
-    console.log (jugadores)
-    console.log(jugadorId)
+    //console.log (jugadores)
+    //console.log(jugadorId)
     res.end()
 })
 app. post("/mokepon/:jugadorId/posicion", (req, res) =>{
@@ -55,7 +55,7 @@ app. post("/mokepon/:jugadorId/posicion", (req, res) =>{
     }
     const enemigosfiltrado = jugadores.filter((jugador) => jugador.mokepon !== undefined)
     const enemigos = enemigosfiltrado.filter((jugador) => jugadorId !== jugador.id)
-    console.log(enemigos)
+    //console.log(enemigos)
     res.send({
         enemigos
     })
