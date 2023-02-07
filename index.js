@@ -18,6 +18,9 @@ class Jugador{
         this.x = x
         this.y = y
     }
+    asignarAtaques(ataques){
+        this.ataques = ataques
+    }
 }
 
 class Mokepon{
@@ -61,6 +64,26 @@ app. post("/mokepon/:jugadorId/posicion", (req, res) =>{
     })
     
 
+})
+
+app.post("/mokepon/:jugadorId/ataques", (req, res) =>{
+    const jugadorId = req.params.jugadorId || ""
+    const ataques = req.body.ataques || []
+  
+    const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
+    if( jugadorIndex >= 0){
+        jugadores[jugadorIndex].asignarAtaques(ataques)
+    }
+    //console.log (jugadores)
+    //console.log(jugadorId)
+    res.end()
+})
+app.get("/mokepon/:jugadorId/ataques", (req, res) => {
+    const jugadorId = req.params.jugadorId || ""
+    const jugador = jugadores.find((jugador) => jugador.id === jugadorId)
+    res.send({
+        ataques: jugador.ataques || []
+    })
 })
 app.listen(3000, () => {
     console.log("listening on http://localhost:3000");
