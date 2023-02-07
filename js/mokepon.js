@@ -101,10 +101,6 @@ let ratigueya = new Mokepon('Ratigueya','./images/mokepons_mokepon_ratigueya_att
 let langostelvis = new Mokepon('Langostelvis','./images/mokepons_mokepon_hipodoge_attack.png',5,'./images/hipodoge1.png',150,30)
 let tucapalma = new Mokepon('Tucapalma','./images/mokepons_mokepon_capipepo_attack.png',5,'./images/capipepo2.png',150,80)
 let pydos = new Mokepon('Pydos','./images/mokepons_mokepon_ratigueya_attack.png',5,'./images/ratigueya3.png',40,40)
-/*
-let albertino = new Mokepon('Albertino','./images/mokepons_mokepon_hipodoge_attack.png',5,'./images/hipodoge4.png',200,200)
-let bubusela = new Mokepon('Bubusela','./images/mokepons_mokepon_capipepo_attack.png',5,'./images/capipepo5.png',300,220)
-let cascarroto = new Mokepon('Cascarroto','./images/mokepons_mokepon_ratigueya_attack.png',5,'./images/ratigueya6.png',400,230) */
 
 // INYECTANDO ATAQUES AL JUGADOR
 const ATAQUE_RATIGUEYA = [
@@ -156,29 +152,6 @@ const ATAQUE_PYDOS =[
     {nombre: '🌱', id:'tierra'}
 ]
 pydos.ataques.push(...ATAQUE_PYDOS)
-/* albertino.ataques.push(
-   
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '💧', id:'agua'}
-    
-)
-bubusela.ataques.push(
-   
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '💧', id:'agua'},
-    {nombre: '💧', id:'agua'}
-    
-)
-cascarroto.ataques.push(
-   
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '🔥', id:'fuego'},
-    {nombre: '💧', id:'agua'},
-    {nombre: '🌱', id:'tierra'}
-    
-) */
 mokepones.push(hipodoge,capipepo,ratigueya,langostelvis,tucapalma,pydos);//INYECTA TODOS LOS ATAQUES
 //console.log(mokepones)
 window.addEventListener('load',() =>{
@@ -205,14 +178,19 @@ window.addEventListener('load',() =>{
            location.reload()
     })
     botonSeleccionar.addEventListener('click',() => {
-        sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
         //sectionSeleccionarAtaque.style.display = "flex"   // HACE APARECER LA SECCION DE ATAQUE QUE ESTABA OCULTA
         mascotaElegidaJugador = encontrarSeleccion(inputsMascotas) 
+        if(!mascotaElegidaJugador) {
+            alert("DEBE ELEGIR UNA MASCOTA")
+        }
+        else{
+        sectionSeleccionarMascota.style.display = "none" // HACE DESAPARECER LA SECCION DE ELEGIR MASCOTAS
         seleccionarMokepon(mascotaElegidaJugador)
         //mascotaElegidaEnemigo = encontrarSeleccion(inputsMascotas,true)
         sectionVerMapa.style.display = "flex"
         
-        iniciarMapa()        
+        iniciarMapa()   
+        }     
     })
 })
 function unirseAlJuego(){//RECIBE EL ID DESDE EL SERVIDOR Y LO ASIGNA A JUGADOID
@@ -460,7 +438,6 @@ function ganador(){
         msgResultado()
                      
 }   
-
 function secuenciaAtaque(){
     botones.forEach((boton) =>{
         boton.addEventListener('click',(e) =>{
