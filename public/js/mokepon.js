@@ -194,7 +194,7 @@ window.addEventListener('load',() =>{
     })
 })
 function unirseAlJuego(){//RECIBE EL ID DESDE EL SERVIDOR Y LO ASIGNA A JUGADOID
-    fetch(`http://localhost:3000/unirse`)
+    fetch(`http://100.10.1.157:3000/unirse`)
         .then(function (res){
             if(res.ok){
                 res.text()
@@ -206,7 +206,7 @@ function unirseAlJuego(){//RECIBE EL ID DESDE EL SERVIDOR Y LO ASIGNA A JUGADOID
         })
 }
 function seleccionarMokepon(mascota){//envia informacion al backend sobre que mascota se eligió
-fetch(`http://localhost:3000/mokepon/${jugadorId}`,{
+fetch(`http://100.10.1.157:3000/mokepon/${jugadorId}`,{
     method: "post",
     headers:{
         "content-Type": "application/json"
@@ -217,7 +217,7 @@ fetch(`http://localhost:3000/mokepon/${jugadorId}`,{
 })
 }
 function enviarPosicion(x,y){// envia al server la posicion del jugador
-    fetch(`http://localhost:3000/mokepon/${jugadorId}/posicion`,{
+    fetch(`http://100.10.1.157:3000/mokepon/${jugadorId}/posicion`,{
         method: "post",
         headers:{
             "content-Type": "application/json"
@@ -463,7 +463,7 @@ function secuenciaAtaque(){
     })
 }
 function enviarAtaque(){
-    fetch(`http://localhost:3000/mokepon/${jugadorId}/ataques`,{
+    fetch(`http://100.10.1.157:3000/mokepon/${jugadorId}/ataques`,{
                 method: "post",
                 headers:{
                     "content-Type": "application/json"
@@ -476,7 +476,7 @@ function enviarAtaque(){
     intervalo = setInterval(obtenerAtaques, 50)
 }
 function obtenerAtaques(){
-    fetch(`http://localhost:3000/mokepon/${enemigoId}/ataques`)
+    fetch(`http://100.10.1.157:3000/mokepon/${enemigoId}/ataques`)
         .then (function(res){
             if(res.ok){
                 res.json()

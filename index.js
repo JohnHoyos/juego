@@ -1,8 +1,10 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+app.use(express.static('public'))
 app.use(cors()) // uso la funcion de cors sobre la de express
 app.use(express.json())//Para poder recibir datos de los usuarios
+
 
 let numero = 0
 const jugadores = []
